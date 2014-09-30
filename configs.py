@@ -1,4 +1,5 @@
 from math import floor
+import math
 
 __author__ = 'tony'
 
@@ -12,4 +13,5 @@ tria_size = 100
 mutate_fac = 0.05
 
 
-print int(11.445)
+a = [0, 6, 3]
+print sorted(range(len(a)), key=lambda k: a[k])

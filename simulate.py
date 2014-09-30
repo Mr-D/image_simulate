@@ -3,6 +3,20 @@ __author__ = 'tony'
 from utils import *
 
 
+
+
+
+
+def build_checkpoints(image, size):
+    Checks = []
+    for i in range(0, size):
+        coor = (random.randint(1, x) - 1, random.randint(1, y) - 1)
+        Checks.append(CheckPoint(coor, image.getpixel(coor)))
+    return Checks
+
+image = Image.open("07.jpg", "r")
+
+
 def build_img(triangulars):
     img = draw_triangular(triangulars[0])
     for i in range(1, triangulars.__len__()):
@@ -34,14 +48,13 @@ class Simi():
         self.triangulars = triangulars
         self.__do_mutate__()
         self.img = build_img(self.triangulars)
-        self.img.show()
-        self.__do_mutate__()
-        self.img = build_img(self.triangulars)
-        self.img.show()
+        # self.img.show()
+        # self.__do_mutate__()
+        # self.img = build_img(self.triangulars)
+        # self.img.show()
 
     def __do_mutate__(self):
         for triangular in self.triangulars:
-            print "mutate a tria"
             triangular.__do_mutate__()
 
     def make(sim1, sim2):
@@ -56,7 +69,43 @@ class Simi():
         return Simi(triangulars)
 
 
+def one_iterate(checks, parents):
+    pair_set = get_norepeate_pairs(parents.__len__(), 40)
+    children = []
+    diff_score = []
+    for pair in pair_set:
+        sim = Simi.make(parents[pair[0]], parents[pair[1]])
+        print "make a pair"
+        children.append(sim)
+        diff_score.append(get_diff(sim, checks))
+    sorted_index = sorted(range(len(diff_score)), key=lambda k: diff_score[k])
+
+    next_generation = []
+    for i in range(0, 10):
+        next_generation.append(children[sorted_index[i]])
+    return next_generation
 
 
-get_random_simi()
+def mutation():
+    checks = build_checkpoints(image, 500)
 
+    next = []
+    for i in range(0, 10):
+        next.append(get_random_simi())
+
+    iterate_num = 10
+    for i  in range(0, iterate_num):
+        print "%d generation" % i
+        next = one_iterate(checks, next)
+
+    for n in next:
+        n.img.show()
+
+
+mutation()
+
+
+# sim1 = get_random_simi()
+# sim2 = get_random_simi()
+# sim3 = Simi.make(sim1, sim2)
+# print get_diff(sim1, checks)
