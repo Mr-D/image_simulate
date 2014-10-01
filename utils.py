@@ -11,7 +11,6 @@ import ImageDraw
 from configs import *
 
 
-
 def get_diff(sim, checks):
     value = 0.0
     for check in checks:
@@ -29,10 +28,17 @@ class CheckPoint():
         self.coord = coordinate
         self.color = color
 
+##        mutate  function   ##
+
+
 def mutate(value, min, max, factor):
+    mutate_value = random.randint(0, 100)
+    if mutate_value > (factor * 100):
+        return value
 
     while True:
-        random_offset = random.randint(min, max) * factor
+        # v = random.randint(min, max - 1)
+        random_offset = random.randint(min, max) * mutate_factor
         negative_random = random.randint(-1 , 2)
         if negative_random > 0:
             random_offset = random_offset * -1
@@ -49,14 +55,14 @@ class Triangular():
     def __do_mutate__(self):
         coordinates = []
         for coordinate in self.coordinates:
-            xx = mutate(coordinate[0], 0, x, mutate_fac)
-            yy = mutate(coordinate[1], 0, y, mutate_fac)
+            xx = mutate(coordinate[0], 0, x, mutate_rate)
+            yy = mutate(coordinate[1], 0, y, mutate_rate)
             coordinates.append((xx, yy))
         self.coordinates = coordinates
 
         color = []
         for v in self.color:
-            color.append(mutate(v, 0, 255, mutate_fac))
+            color.append(mutate(v, 0, 255, mutate_rate))
         self.color = color
 
 

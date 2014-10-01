@@ -3,14 +3,16 @@ import math
 
 __author__ = 'tony'
 
-x = 512
-y = 512
+x = 400
+y = 400
 
 alpha = 0.15
 
 tria_size = 100
 
-mutate_fac = 0.05
+mutate_rate = 0.02
+mutate_factor = 0.2
+
 
 
 a = [0, 6, 3]
