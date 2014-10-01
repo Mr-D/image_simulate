@@ -69,7 +69,7 @@ class Simi():
 
 
 def one_iterate(checks, parents):
-    pair_set = get_norepeate_pairs(parents.__len__(), 1000)
+    pair_set = get_norepeate_pairs(parents.__len__(), 200)
     children = []
     diff_score = []
     for pair in pair_set:
@@ -79,7 +79,7 @@ def one_iterate(checks, parents):
     sorted_index = sorted(range(len(diff_score)), key=lambda k: diff_score[k])
     next_generation = []
     print "the most matched is %d" % diff_score[sorted_index[0]]
-    for i in range(0, 100):
+    for i in range(0, 50):
         next_generation.append(children[sorted_index[i]])
 
     return next_generation
@@ -89,7 +89,7 @@ def mutation():
     checks = build_checkpoints(image, 500)
 
     next = []
-    for i in range(0, 100):
+    for i in range(0, 50):
         next.append(get_random_simi())
 
     iterate_num = 40
