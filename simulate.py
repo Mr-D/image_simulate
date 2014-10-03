@@ -41,7 +41,7 @@ def start_mutate():
 
         max_diff = new_diff
         iterate_round += 1
-        if iterate_round > configs.max_iterate:
+        if iterate_round > configs.max_iterate and max_diff < configs.min_optimal:
             break
 
         print "all iteratecount %d effective iterate %d optimal value :%d" % (
