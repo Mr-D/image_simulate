@@ -23,12 +23,39 @@ def __norm_mutate__(value, min, max):
     return value + norm_rand
 
 
+def all_move(value_list, min, max, mutate_rate):
+    rand = random.randint(1, mutate_rate)
+    if rand > 1:
+        return False, value_list
+
+    while True:
+        v = int(__norm_mutate__(0, max, min))
+
+        if v == 0:
+            return False, value_list
+
+        valid = True
+        for value in value_list:
+            mutate_v = value + v
+            if mutate_v >= max or mutate_v < min:
+                valid = False
+                break
+
+        if valid:
+            for i in range(0, value_list.__len__()):
+                value_list[i] += 1
+            return True, value_list
+
+
 def do_mutate(value, min, max, mutate_rate):
     rand = random.randint(1, mutate_rate)
     if rand > 1:
-        return value
+        return False, value
+
     while True:
         v = int(__norm_mutate__(value, max, min))
         if min <= v < max:
-            return v
+            if v == value:
+                return False, v
+            return True, v
 

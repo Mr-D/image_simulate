@@ -1,21 +1,23 @@
-
 __author__ = 'tony'
-import random,sys
+
+import random, sys
 import configs
 import draw_elements as drawing
 
 
 def get_random_simi():
 
-    triangulars = []
-    for i in range(0, configs.tria_size):
-        c1 = (random.randint(1, configs.x) - 1, random.randint(1, configs.y) - 1)
-        c2 = (random.randint(1, configs.x) - 1, random.randint(1, configs.y) - 1)
-        c3 = (random.randint(1, configs.x) - 1, random.randint(1, configs.y) - 1)
+    polygons = []
+    for i in range(0, configs.polygon_num):
+        coords = []
+        for j in range(0, configs.polygon_points):
+            c1 = (random.randint(1, configs.x) - 1, random.randint(1, configs.y) - 1)
+            coords.append(c1)
 
         color = list(configs.origin_image.getpixel(c1))
-        triangulars.append(drawing.Triangular([c1, c2, c3], color))
-    return drawing.SimImage(triangulars)
+
+        polygons.append(drawing.Polygon(coords, color))
+    return drawing.SimImage(polygons)
 
 
 
@@ -32,8 +34,8 @@ def start_mutate():
         all_iterate_count += 1
         clone_image = sim_image.clone()
         sim_image.__do_mutate__()
-        new_diff = sim_image.get_diff()
 
+        new_diff = sim_image.get_diff()
         if new_diff >= max_diff:
             del sim_image
             sim_image = clone_image
@@ -46,6 +48,8 @@ def start_mutate():
 
         print "all iteratecount %d effective iterate %d optimal value :%d" % (
         all_iterate_count, iterate_round, max_diff)
+        sys.stdout.flush()
+
         if iterate_round % 100 == 0:
             image_name = "simulation_images/image_%d.jpg" % iterate_round
             sim_image.img.save(image_name, "JPEG")

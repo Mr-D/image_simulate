@@ -5,8 +5,11 @@ __author__ = 'tony'
 
 
 ###  三角形个数
-tria_size = 100
+polygon_points = 5
+polygon_num = 100
 
+
+## 迭代终止条件
 ###  迭代次数
 max_iterate = 20000
 ### 最优函数目标值
@@ -17,8 +20,10 @@ max_checks = 1000
 
 
 #  mutate rate #
-coordinator_mutate_rate = 1000
-color_mutate_rate = 1500
+coordinator_mutate_rate = 500
+color_mutate_rate = 1000
+
+all_coordinator_mutate_rate = 400
 #  mutate rate #
 
 

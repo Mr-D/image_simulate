@@ -21,7 +21,6 @@ def get_random_nonrepeate_coord(x_max, y_max, count):
     return check_coords
 
 
-
 class CheckPixel():
     def __init__(self, coordinator, pixel):
         self.__coord = coordinator
@@ -31,7 +30,7 @@ class CheckPixel():
         image_pixel = image.getpixel(self.__coord)
         value = 0
         for i in range(0, 3):
-            value += int(math.fabs(image_pixel[i] - self.__pixel[i]))
+            value += abs(image_pixel[i] - self.__pixel[i])
         return value
 
 
