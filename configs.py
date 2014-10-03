@@ -10,7 +10,7 @@ tria_size = 100
 ###  迭代次数
 max_iterate = 20000
 ### 最优函数目标值
-min_optimal = 5000
+min_optimal = 10000
 
 ###  采点个数  （用于最优函数分析）
 max_checks = 1000

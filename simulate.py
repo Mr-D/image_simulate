@@ -34,14 +34,14 @@ def start_mutate():
         sim_image.__do_mutate__()
         new_diff = sim_image.get_diff()
 
-        if new_diff > max_diff:
+        if new_diff >= max_diff:
             del sim_image
             sim_image = clone_image
             continue
 
         max_diff = new_diff
         iterate_round += 1
-        if iterate_round > configs.max_iterate and max_diff < configs.min_optimal:
+        if iterate_round > configs.max_iterate or max_diff < configs.min_optimal:
             break
 
         print "all iteratecount %d effective iterate %d optimal value :%d" % (
