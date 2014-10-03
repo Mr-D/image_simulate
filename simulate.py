@@ -1,113 +1,60 @@
+
 __author__ = 'tony'
-
-from utils import *
-
-
-
-
-def build_checkpoints(image, size):
-    Checks = []
-    for i in range(0, size):
-        coor = (random.randint(1, x) - 1, random.randint(1, y) - 1)
-        Checks.append(CheckPoint(coor, image.getpixel(coor)))
-    return Checks
-
-image = Image.open("1.jpg", "r")
-
-
-
-def build_img(triangulars):
-    img = draw_triangular(triangulars[0])
-    for i in range(1, triangulars.__len__()):
-        img_b = draw_triangular(triangulars[i])
-        img = Image.blend(img, img_b, alpha)
-        del img_b
-
-    return img
+import random,sys
+import configs
+import draw_elements as drawing
 
 
 def get_random_simi():
-    x, y = image.size
 
     triangulars = []
-    for i in range(0, tria_size):
-        c1 = (random.randint(1, x) - 1, random.randint(1, y) - 1)
-        c2 = (random.randint(1, x) - 1, random.randint(1, y) - 1)
-        c3 = (random.randint(1, x) - 1, random.randint(1, y) - 1)
+    for i in range(0, configs.tria_size):
+        c1 = (random.randint(1, configs.x) - 1, random.randint(1, configs.y) - 1)
+        c2 = (random.randint(1, configs.x) - 1, random.randint(1, configs.y) - 1)
+        c3 = (random.randint(1, configs.x) - 1, random.randint(1, configs.y) - 1)
+
+        color = list(configs.origin_image.getpixel(c1))
+        triangulars.append(drawing.Triangular([c1, c2, c3], color))
+    return drawing.SimImage(triangulars)
 
 
-        color = image.getpixel((random.randint(1, 255) - 1, random.randint(1, 255) - 1))
-        triangulars.append(Triangular([c1, c2, c3], color))
-    return Simi(triangulars)
 
 
-class Simi():
 
-    def __init__(self, triangulars):
-        self.triangulars = triangulars
-        self.__do_mutate__()
-        self.img = build_img(self.triangulars)
-        # self.img.show()
-        # self.__do_mutate__()
-        # self.img = build_img(self.triangulars)
-        # self.img.show()
+def start_mutate():
+    sim_image = get_random_simi()
+    max_diff = sim_image.get_diff()
 
-    def __do_mutate__(self):
-        for triangular in self.triangulars:
-            triangular.__do_mutate__()
+    iterate_round = 0
+    all_iterate_count = 0
 
-    def make(sim1, sim2):
-        a, b = splits_rand_parts(tria_size, tria_size / 2)
+    while True:
+        all_iterate_count += 1
+        clone_image = sim_image.clone()
+        sim_image.__do_mutate__()
+        new_diff = sim_image.get_diff()
 
-        triangulars = range(0, tria_size)
-        for index in a:
-            triangulars[index] = sim1.triangulars[index]
-        for index in b:
-            triangulars[index] = sim2.triangulars[index]
+        if new_diff > max_diff:
+            del sim_image
+            sim_image = clone_image
+            continue
 
-        return Simi(triangulars)
+        max_diff = new_diff
+        iterate_round += 1
+        if iterate_round > configs.max_iterate:
+            break
 
+        print "all iteratecount %d effective iterate %d optimal value :%d" % (
+        all_iterate_count, iterate_round, max_diff)
+        if iterate_round % 100 == 0:
+            image_name = "simulation_images/image_%d.jpg" % iterate_round
+            sim_image.img.save(image_name, "JPEG")
 
-def one_iterate(checks, parents):
-    pair_set = get_norepeate_pairs(parents.__len__(), 200)
-    children = []
-    diff_score = []
-    for pair in pair_set:
-        sim = Simi.make(parents[pair[0]], parents[pair[1]])
-        children.append(sim)
-        diff_score.append(get_diff(sim, checks))
-    sorted_index = sorted(range(len(diff_score)), key=lambda k: diff_score[k])
-    next_generation = []
-    print "the most matched is %d" % diff_score[sorted_index[0]]
-    for i in range(0, 50):
-        next_generation.append(children[sorted_index[i]])
-
-    return next_generation
+    image_name = "image_%d.jpg" % iterate_round
+    sim_image.img.save(image_name, "JPEG")
 
 
-def mutation():
-    checks = build_checkpoints(image, 500)
-
-    next = []
-    for i in range(0, 50):
-        next.append(get_random_simi())
-
-    iterate_num = 40
-    for i  in range(0, iterate_num):
-        print "%d generation" % i
-        next = one_iterate(checks, next)
-        next[0].img.show()
-        name = "img_%d.jpg" % i
-        next[0].img.save(name,"JPEG")
-
-    for n in next:
-        n.img.show()
+if __name__ == "__main__":
+    start_mutate()
 
 
-mutation()
-
-
-# sim1 = get_random_simi()
-# sim2 = get_random_simi()
-# sim3 = Simi.make(sim1, sim2)
-# print get_diff(sim1, checks)

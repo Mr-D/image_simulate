@@ -1,19 +1,25 @@
-from math import floor
-import math
+#coding=utf8
+import Image
 
 __author__ = 'tony'
 
-x = 400
-y = 400
 
-alpha = 0.15
-
+###  三角形个数
 tria_size = 100
 
-mutate_rate = 0.02
-mutate_factor = 0.2
+###  迭代次数
+max_iterate = 1000
+
+###  采点个数  （用于最优函数分析）
+max_checks = 1000
 
 
+#  mutate rate #
+coordinator_mutate_rate = 1000
+color_mutate_rate = 1500
+#  mutate rate #
 
-a = [0, 6, 3]
-print sorted(range(len(a)), key=lambda k: a[k])
+
+####
+origin_image = Image.open("11.jpg", "r")
+x, y = origin_image.size
