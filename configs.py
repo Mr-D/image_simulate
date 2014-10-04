@@ -4,29 +4,44 @@ import Image
 __author__ = 'tony'
 
 
+####
+origin_image = Image.open("dd.png", "r")
+x, y = origin_image.size
+
+###  采点个数  （用于最优函数分析）
+MAX_CHECKS = int(x * y / 10)
+
+##
+POLYGON_SMALL = "SMALL"
+POLYGON_BIG = "BIG"
+
 ###  三角形个数
-polygon_points = 5
-polygon_num = 100
+POLYGON_POINTS = 3
+
+POLYGON_NUM_MIN = int(x * y / 400)
+POLYGON_NUM_MAX = POLYGON_NUM_MIN * 2
+###  小尺寸的多边形的比例
+SMALL_POLYGON_PERCENT = 80
 
 
 ## 迭代终止条件
 ###  迭代次数
-max_iterate = 20000
+MAX_ITERATE = 20000
 ### 最优函数目标值
-min_optimal = 10000
+MIN_OPTIMAL = 10000
 
-###  采点个数  （用于最优函数分析）
-max_checks = 1000
+
 
 
 #  mutate rate #
-coordinator_mutate_rate = 500
-color_mutate_rate = 1000
+COORDINATOR_MUTATE_RATE = 500
+COLOR_MUTATE_RATE = 1000
 
-all_coordinator_mutate_rate = 400
+POLYGON_MOVE_MUTATE_RATE = 400
+
+#
+POLYGON_DROP_RATE = 20
+POKYGON_NEW_RATE = 19
 #  mutate rate #
 
 
-####
-origin_image = Image.open("11.jpg", "r")
-x, y = origin_image.size

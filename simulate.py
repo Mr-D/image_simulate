@@ -1,30 +1,15 @@
 __author__ = 'tony'
 
-import random, sys
+import sys
 import configs
-import draw_elements as drawing
-
-
-def get_random_simi():
-
-    polygons = []
-    for i in range(0, configs.polygon_num):
-        coords = []
-        for j in range(0, configs.polygon_points):
-            c1 = (random.randint(1, configs.x) - 1, random.randint(1, configs.y) - 1)
-            coords.append(c1)
-
-        color = list(configs.origin_image.getpixel(c1))
-
-        polygons.append(drawing.Polygon(coords, color))
-    return drawing.SimImage(polygons)
-
+import polygon_mutation
 
 
 
 
 def start_mutate():
-    sim_image = get_random_simi()
+    sim_image = polygon_mutation.get_random_simi()
+    sim_image.img.show()
     max_diff = sim_image.get_diff()
 
     iterate_round = 0
@@ -43,7 +28,7 @@ def start_mutate():
 
         max_diff = new_diff
         iterate_round += 1
-        if iterate_round > configs.max_iterate or max_diff < configs.min_optimal:
+        if iterate_round > configs.MAX_ITERATE or max_diff < configs.MIN_OPTIMAL:
             break
 
         print "all iteratecount %d effective iterate %d optimal value :%d" % (

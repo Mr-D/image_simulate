@@ -40,7 +40,7 @@ class CheckPixel():
 def get_check_pixels(image):
     check_pixels = []
     x_max, y_max = image.size
-    random_coords = get_random_nonrepeate_coord(x_max, y_max, configs.max_checks)
+    random_coords = get_random_nonrepeate_coord(x_max, y_max, configs.MAX_CHECKS)
 
     for coord in random_coords:
         check_pixels.append(CheckPixel(coord, image.getpixel(coord)))

@@ -1,26 +1,16 @@
+#coding=utf8
 __author__ = 'tony'
 
 import random
 
-def __norm_random_init__(num):
-    random_list = []
-    size = 0
-    while True:
-        norm_value = random.normalvariate(0, 1)
-        if -20 < norm_value < 20:
-            random_list.append(norm_value)
-            size += 1
-            if size >= num:
-                return random_list
 
-norm_random_list = __norm_random_init__(20000)
-# print norm_random_list
-
-
-def __norm_mutate__(value, min, max):
-    index = random.randint(0, norm_random_list.__len__() - 1)
-    norm_rand = norm_random_list[index] / 1.96 * (max - min) * 0.05
-    return value + norm_rand
+def norm_mutate(value, min, max):
+    """
+    0, 1的正态分布，95%的可能性变异的幅度为 0.1 * （max - min）
+    """
+    norm_random = random.normalvariate(0, 1)
+    norm_rand = norm_random / 1.96 * (max - min) * 0.1
+    return int(value + norm_rand)
 
 
 def all_move(value_list, min, max, mutate_rate):
@@ -29,7 +19,7 @@ def all_move(value_list, min, max, mutate_rate):
         return False, value_list
 
     while True:
-        v = int(__norm_mutate__(0, max, min))
+        v = norm_mutate(0, max, min)
 
         if v == 0:
             return False, value_list
@@ -53,7 +43,7 @@ def do_mutate(value, min, max, mutate_rate):
         return False, value
 
     while True:
-        v = int(__norm_mutate__(value, max, min))
+        v = norm_mutate(value, max, min)
         if min <= v < max:
             if v == value:
                 return False, v
