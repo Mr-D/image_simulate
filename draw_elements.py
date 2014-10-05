@@ -57,7 +57,7 @@ class SimImage():
         self.polygons = polugons
         self.img = image_build.build_img(self.polygons)
 
-    def __do_mutate__(self):
+    def __do_mutate__(self, need_local_optimization=False):
         redraw = False
         for polygon in self.polygons:
             polygon.__do_mutate__()
@@ -65,19 +65,23 @@ class SimImage():
 
         redraw = self.polygon_mutate() | redraw
 
+        if need_local_optimization:
+            self.local_optimize()
+            redraw = True
+
         if redraw:
             self.img = image_build.build_img(self.polygons)
 
     def polygon_mutate(self):
         dirty = False
         drop_rand = random.randint(1, configs.POLYGON_DROP_RATE)
-        if drop_rand == 1:
+        if drop_rand == 1 and self.polygons.__len__() > configs.POLYGON_NUM_MIN:
             drop_index = random.randint(0, self.polygons.__len__() - 1)
             self.polygons.pop(drop_index)
             dirty = True
 
         new_polygon = random.randint(1, configs.POKYGON_NEW_RATE)
-        if new_polygon == 1:
+        if new_polygon == 1 and self.polygons.__len__() < configs.POLYGON_NUM_MAX:
             new_polygon = polygon_mutation.create_polygon()
             insert_pos = random.randint(0, self.polygons.__len__())
             self.polygons.insert(insert_pos, new_polygon)
@@ -92,6 +96,17 @@ class SimImage():
         for polygon in self.polygons:
             copy_polygon.append(polygon.clone())
         return SimImage(copy_polygon)
+
+    def local_optimize(self):
+        x, y = polygon_mutation.get_dismatch_location(self)
+        print "local optimization coord:(%d  %d)" % (x, y)
+        for polygon in self.polygons:
+            if polygon.type == configs.POLYGON_SMALL:
+                self.polygons.remove(polygon)
+                break
+        small_polygon = polygon_mutation.get_small_polygon_by_coord(x, y)
+        self.polygons.append(small_polygon)
+
 
 
     # def make(sim1, sim2):

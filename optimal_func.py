@@ -22,9 +22,9 @@ def get_random_nonrepeate_coord(x_max, y_max, count):
 
 
 class CheckPixel():
-    def __init__(self, coordinator, pixel):
+    def __init__(self, coordinator):
         self.__coord = coordinator
-        self.__pixel = pixel
+        self.__pixel = configs.origin_image.getpixel(self.__coord)
 
     def diff(self, image):
         image_pixel = image.getpixel(self.__coord)
@@ -34,21 +34,17 @@ class CheckPixel():
         return value
 
 
-
-
-
-def get_check_pixels(image):
+def get_check_pixels():
     check_pixels = []
-    x_max, y_max = image.size
-    random_coords = get_random_nonrepeate_coord(x_max, y_max, configs.MAX_CHECKS)
+    random_coords = get_random_nonrepeate_coord(configs.x, configs.y, configs.MAX_CHECKS)
 
     for coord in random_coords:
-        check_pixels.append(CheckPixel(coord, image.getpixel(coord)))
+        check_pixels.append(CheckPixel(coord))
 
     return check_pixels
 
 
-check_pixels = get_check_pixels(configs.origin_image)
+check_pixels = get_check_pixels()
 
 
 def optimal_function(image1):

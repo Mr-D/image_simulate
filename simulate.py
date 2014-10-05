@@ -1,3 +1,4 @@
+#coding=utf8
 __author__ = 'tony'
 
 import sys
@@ -15,10 +16,18 @@ def start_mutate():
     iterate_round = 0
     all_iterate_count = 0
 
+    pre_effective_it = 0
+
     while True:
         all_iterate_count += 1
         clone_image = sim_image.clone()
-        sim_image.__do_mutate__()
+
+        #是否需要局部优化
+        need_local_optimization = False
+        # if all_iterate_count - pre_effective_it > configs.LOCAL_OPTIMIZATION_IT:
+        #     need_local_optimization = True
+
+        sim_image.__do_mutate__(need_local_optimization)
 
         new_diff = sim_image.get_diff()
         if new_diff >= max_diff:
@@ -26,6 +35,7 @@ def start_mutate():
             sim_image = clone_image
             continue
 
+        pre_effective_it = all_iterate_count
         max_diff = new_diff
         iterate_round += 1
         if iterate_round > configs.MAX_ITERATE or max_diff < configs.MIN_OPTIMAL:
