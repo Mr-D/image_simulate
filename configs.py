@@ -6,10 +6,14 @@ __author__ = 'tony'
 
 ####
 origin_image = Image.open("dd.png", "r")
-x, y = origin_image.size
+divide_size = (200, 200)
+# x, y = origin_image.size
 
 ###  采点个数  （用于最优函数分析）
-MAX_CHECKS = int(x * y / 10)
+# MAX_CHECKS = int(x * y / 10)
+def get_checks_count(image):
+    x, y = image.size
+    return int(x * y / 10)
 
 ##
 POLYGON_SMALL = "SMALL"
@@ -18,8 +22,14 @@ POLYGON_BIG = "BIG"
 ###  三角形个数
 POLYGON_POINTS = 3
 
-POLYGON_NUM_MIN = int(x * y / 300)
-POLYGON_NUM_MAX = int(POLYGON_NUM_MIN * 2.5)
+# POLYGON_NUM_MIN = int(x * y / 300)
+# POLYGON_NUM_MAX = int(POLYGON_NUM_MIN * 2.5)
+def get_polygon_min_max((x, y)):
+    min = int(x * y / 300)
+    return min, int(min * 2.5)
+
+
+
 ###  小尺寸的多边形的比例
 SMALL_POLYGON_PERCENT = 80
 
