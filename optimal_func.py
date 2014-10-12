@@ -3,8 +3,6 @@ import random
 
 __author__ = 'tony'
 
-import configs
-
 
 def get_random_nonrepeate_coord(x_max, y_max, count):
     check_coords = set([])
@@ -22,9 +20,9 @@ def get_random_nonrepeate_coord(x_max, y_max, count):
 
 
 class CheckPixel():
-    def __init__(self, coordinator):
+    def __init__(self, image, coordinator):
         self.__coord = coordinator
-        self.__pixel = configs.origin_image.getpixel(self.__coord)
+        self.__pixel = image.getpixel(self.__coord)
 
     def diff(self, image):
         image_pixel = image.getpixel(self.__coord)
@@ -34,22 +32,23 @@ class CheckPixel():
         return value
 
 
-def get_check_pixels():
+def get_check_pixels(image, count):
+    x, y = image.size
     check_pixels = []
-    random_coords = get_random_nonrepeate_coord(configs.x, configs.y, configs.MAX_CHECKS)
+    random_coords = get_random_nonrepeate_coord(x, y, count)
 
     for coord in random_coords:
-        check_pixels.append(CheckPixel(coord))
+        check_pixels.append(CheckPixel(image, coord))
 
     return check_pixels
 
 
-check_pixels = get_check_pixels()
+# check_pixels = get_check_pixels()
 
 
-def optimal_function(image1):
+def optimal_function(image1, checks):
     diff_v = 0
-    for pixel in check_pixels:
+    for pixel in checks:
         diff_v += pixel.diff(image1)
     return diff_v
 
