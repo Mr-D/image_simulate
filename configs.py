@@ -22,10 +22,6 @@ POLYGON_BIG = "BIG"
 ###  三角形个数
 POLYGON_POINTS = 3
 
-<<<<<<< HEAD
-POLYGON_NUM_MIN = int(x * y / 200)
-POLYGON_NUM_MAX = int(POLYGON_NUM_MIN * 3)
-=======
 # POLYGON_NUM_MIN = int(x * y / 300)
 # POLYGON_NUM_MAX = int(POLYGON_NUM_MIN * 2.5)
 def get_polygon_min_max((x, y)):
@@ -34,7 +30,6 @@ def get_polygon_min_max((x, y)):
 
 
 
->>>>>>> 5fbff9afd5e485d779584a20bb5a29aff74583b5
 ###  小尺寸的多边形的比例
 SMALL_POLYGON_PERCENT = 90
 

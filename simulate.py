@@ -87,19 +87,9 @@ if __name__ == "__main__":
 
     compose_num = 0
     while True:
-<<<<<<< HEAD
-        all_iterate_count += 1
-        clone_image = sim_image.clone()
-
-        #是否需要局部优化
-        need_local_optimization = False
-
-        sim_image.__do_mutate__(need_local_optimization)
-=======
         cond.acquire()
         cond.wait()
         cond.release()
->>>>>>> 5fbff9afd5e485d779584a20bb5a29aff74583b5
 
         divides = []
         for arr in image_arr_list:
@@ -112,6 +102,8 @@ if __name__ == "__main__":
             compose_num += 1
             image = image_build.compose(divides)
             image.show()
+            image_name = "simulation_images/image_%d.jpg" % compose_num
+            image.save(image_name, "JPEG")
 
 
 

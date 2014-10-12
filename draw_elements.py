@@ -113,24 +113,6 @@ class SimImage():
         copy_polygon = []
         for polygon in self.polygons:
             copy_polygon.append(polygon.clone())
-<<<<<<< HEAD
-        return SimImage(copy_polygon)
-
-    def local_optimize(self):
-        replace_polygon = polygon_mutation.get_replace_polygon(self)
-        replace = False
-        for index in range(self.polygons.__len__() - 1, 0, -1):
-            polygon = self.polygons[index]
-            if polygon.type == configs.POLYGON_SMALL and (
-                polygon.point_inward(replace_polygon.coordinates[0]) or polygon.point_inward(
-                    replace_polygon.coordinates[1]) or polygon.point_inward(replace_polygon.coordinates[2])):
-                self.polygons.remove(polygon)
-                replace = True
-                break
-        if replace:
-            print "local optimization coord:(%d  %d)" % (replace_polygon.coordinates[0][0], replace_polygon.coordinates[0][1])
-            self.polygons.append(replace_polygon)
-=======
         return SimImage(copy_polygon, self.size, self.polygons_range)
 
     # def local_optimize(self):
@@ -142,7 +124,6 @@ class SimImage():
     #             break
     #     small_polygon = polygon_mutation.get_small_polygon_by_coord(x, y)
     #     self.polygons.append(small_polygon)
->>>>>>> 5fbff9afd5e485d779584a20bb5a29aff74583b5
 
 
 

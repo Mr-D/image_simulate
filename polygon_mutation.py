@@ -53,35 +53,6 @@ def create_polygon((x, y)):
 
 def get_random_simi((x, y)):
     polygons = []
-<<<<<<< HEAD
-    for i in range(0, configs.POLYGON_NUM_MIN):
-        polygons.append(create_polygon())
-    return drawing.SimImage(polygons)
-
-
-def get_replace_polygon(sim):
-
-    new_polygon = None
-    max_diff = 0
-
-    for i in range(0, 100):
-        x = random.randint(0, configs.x - 1)
-        y = random.randint(0, configs.y - 1)
-
-        diff_value = 0
-        polygon = get_small_polygon_by_coord(x, y)
-        for coords in polygon.coordinates:
-            pixel = optimal_func.CheckPixel(coords)
-            diff_value += pixel.diff(sim.img)
-
-        if diff_value > max_diff:
-            new_polygon = polygon
-            max_diff = diff_value
-        else:
-            del polygon
-
-    return new_polygon
-=======
     polygons_range = configs.get_polygon_min_max((x, y))
     for i in range(0, polygons_range[0]):
         polygons.append(create_polygon((x, y)))
@@ -112,5 +83,4 @@ def get_replace_polygon(sim):
 #             max_diff = diff_value
 #
 #     return max_diff_x, max_diff_y
->>>>>>> 5fbff9afd5e485d779584a20bb5a29aff74583b5
 
