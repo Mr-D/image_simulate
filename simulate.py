@@ -102,6 +102,8 @@ if __name__ == "__main__":
             compose_num += 1
             image = image_build.compose(divides)
             image.show()
+            image_name = "image_%d.jpg" % compose_num
+            image.save(image_name, "JPEG")
 
 
 
