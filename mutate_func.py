@@ -9,7 +9,7 @@ def norm_mutate(value, min, max):
     0, 1的正态分布，95%的可能性变异的幅度为 0.1 * （max - min）
     """
     norm_random = random.normalvariate(0, 1)
-    norm_rand = norm_random / 1.96 * (max - min) * 0.07
+    norm_rand = norm_random / 1.96 * (max - min) * 0.05
     return int(value + norm_rand)
 
 

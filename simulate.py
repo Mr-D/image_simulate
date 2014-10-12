@@ -24,8 +24,6 @@ def start_mutate():
 
         #是否需要局部优化
         need_local_optimization = False
-        # if all_iterate_count - pre_effective_it > configs.LOCAL_OPTIMIZATION_IT:
-        #     need_local_optimization = True
 
         sim_image.__do_mutate__(need_local_optimization)
 

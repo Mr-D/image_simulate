@@ -50,6 +50,21 @@ class Polygon():
         copy_color = list(self.color)
         return Polygon(copy_coords, copy_color, self.type)
 
+    def point_inward(self, coords):
+        PA = (coords[0] - self.coordinates[0][0], coords[1] - self.coordinates[0][1])
+        PB = (coords[0] - self.coordinates[1][0], coords[1] - self.coordinates[1][1])
+        PC = (coords[0] - self.coordinates[2][0], coords[1] - self.coordinates[2][1])
+
+        PA_PB = PA[0] * PB[1] - PA[1] * PB[0]
+        PB_PC = PB[0] * PC[1] - PB[1] * PC[0]
+
+        PC_PA = PC[0] * PA[1] - PC[1] * PA[0]
+
+
+        if (PA_PB < 0 and PB_PC < 0 and PC_PA < 0) or (PA_PB > 0 and PB_PC > 0 and PC_PA > 0):
+            return True
+        return False
+
 
 class SimImage():
 
@@ -98,24 +113,19 @@ class SimImage():
         return SimImage(copy_polygon)
 
     def local_optimize(self):
-        x, y = polygon_mutation.get_dismatch_location(self)
-        print "local optimization coord:(%d  %d)" % (x, y)
-        for polygon in self.polygons:
-            if polygon.type == configs.POLYGON_SMALL:
+        replace_polygon = polygon_mutation.get_replace_polygon(self)
+        replace = False
+        for index in range(self.polygons.__len__() - 1, 0, -1):
+            polygon = self.polygons[index]
+            if polygon.type == configs.POLYGON_SMALL and (
+                polygon.point_inward(replace_polygon.coordinates[0]) or polygon.point_inward(
+                    replace_polygon.coordinates[1]) or polygon.point_inward(replace_polygon.coordinates[2])):
                 self.polygons.remove(polygon)
+                replace = True
                 break
-        small_polygon = polygon_mutation.get_small_polygon_by_coord(x, y)
-        self.polygons.append(small_polygon)
+        if replace:
+            print "local optimization coord:(%d  %d)" % (replace_polygon.coordinates[0][0], replace_polygon.coordinates[0][1])
+            self.polygons.append(replace_polygon)
 
 
 
-    # def make(sim1, sim2):
-    #     a, b = splits_rand_parts(tria_size, tria_size / 2)
-    #
-    #     triangulars = range(0, tria_size)
-    #     for index in a:
-    #         triangulars[index] = sim1.triangulars[index]
-    #     for index in b:
-    #         triangulars[index] = sim2.triangulars[index]
-    #
-    #     return Simi(triangulars)

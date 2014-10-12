@@ -58,10 +58,9 @@ def get_random_simi():
     return drawing.SimImage(polygons)
 
 
-def get_dismatch_location(sim):
+def get_replace_polygon(sim):
 
-    max_diff_x = -1
-    max_diff_y = -1
+    new_polygon = None
     max_diff = 0
 
     for i in range(0, 100):
@@ -69,17 +68,16 @@ def get_dismatch_location(sim):
         y = random.randint(0, configs.y - 1)
 
         diff_value = 0
-        for j in range(0, 10):
-            norm_x = mutate_func.norm_mutate(x, 0, configs.x)
-            norm_y = mutate_func.norm_mutate(y, 0, configs.y)
-            if 0 <= norm_x < configs.x and 0 <= norm_y < configs.y:
-                pixel = optimal_func.CheckPixel((norm_x, norm_y))
-                diff_value += pixel.diff(sim.img)
+        polygon = get_small_polygon_by_coord(x, y)
+        for coords in polygon.coordinates:
+            pixel = optimal_func.CheckPixel(coords)
+            diff_value += pixel.diff(sim.img)
 
         if diff_value > max_diff:
-            max_diff_x = x
-            max_diff_y = y
+            new_polygon = polygon
             max_diff = diff_value
+        else:
+            del polygon
 
-    return max_diff_x, max_diff_y
+    return new_polygon
 
